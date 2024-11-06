@@ -7,7 +7,7 @@ from loguru import logger
 
 import reqs
 from loader import ACCESS_TOKEN, REFRESH_TOKEN, ABT_DATA, SKU_ID, SKU_QUANTITY, HOURS, MINUTES, SECONDS, MILLISECONDS, \
-    ORDER_INTERVAL, ORDER_ATTEMPTS, USE_START_TIME, USE_MEASURING
+    ORDER_INTERVAL, ORDER_ATTEMPTS, USE_START_TIME, USE_MEASURING, ADD_TO_CART
 from utils import measure_time, generate_x_o3_fp_ozon
 
 order_data = [
@@ -112,18 +112,20 @@ async def main():
     else:
         logger.warning(f"USE_START_TIME IS DISABLED")
 
-    for _ in range(ORDER_ATTEMPTS):
-        async with (aiohttp.ClientSession(
-                connector=aiohttp.TCPConnector(ssl=False),
-                headers=HEADERS,
-                trust_env=True
-        ) as session):
-            await asyncio.gather(
-                addToCart(session, order_data),
-                refreshCart(session),
-                goToCheckout(session),
-                createOrder(session)
-            )
+    async with (aiohttp.ClientSession(
+            connector=aiohttp.TCPConnector(ssl=False),
+            headers=HEADERS,
+            trust_env=True
+    ) as session):
+        tasks = [
+            refreshCart(session),
+            goToCheckout(session),
+            createOrder(session)
+        ]
+        if ADD_TO_CART == 1:
+            tasks.insert(0, addToCart(session, order_data))
+        for _ in range(ORDER_ATTEMPTS):
+            await asyncio.gather(*tasks)
         await asyncio.sleep(ORDER_INTERVAL)
 
 

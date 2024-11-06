@@ -48,7 +48,7 @@ async def get(session, url, params=None, json_res=False):
                 last_response_status = response.status
                 if response.status == 200:
                     return last_response
-        except (aiohttp.ClientError, json.JSONDecodeError):
+        except Exception as e:
             last_response = e
         if attempt < REQUEST_ATTEMPTS - 1:
             await asyncio.sleep(REQUEST_INTERVAL)

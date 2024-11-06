@@ -117,15 +117,22 @@ async def main():
             headers=HEADERS,
             trust_env=True
     ) as session):
-        tasks = [
-            refreshCart(session),
-            goToCheckout(session),
-            createOrder(session)
-        ]
         if ADD_TO_CART == 1:
-            tasks.insert(0, addToCart(session, order_data))
-        for _ in range(ORDER_ATTEMPTS):
-            await asyncio.gather(*tasks)
+            for _ in range(ORDER_ATTEMPTS):
+                await asyncio.gather(
+                    addToCart(session, order_data),
+                    refreshCart(session),
+                    goToCheckout(session),
+                    createOrder(session)
+                )
+        else:
+            for _ in range(ORDER_ATTEMPTS):
+                await asyncio.gather(
+                    refreshCart(session),
+                    goToCheckout(session),
+                    createOrder(session)
+                )
+
         await asyncio.sleep(ORDER_INTERVAL)
 
 

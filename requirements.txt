@@ -4,3 +4,4 @@ uuid~=1.30
 DateTime~=5.4
 loguru~=0.7.2
 configparser~=6.0.0
+fake-useragent~=1.5.1

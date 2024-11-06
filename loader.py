@@ -12,6 +12,7 @@ REFRESH_TOKEN: str = config['MAIN']['REFRESH_TOKEN']
 ABT_DATA: str = config['MAIN']['ABT_DATA']
 ORDER_ATTEMPTS: int = int(config['MAIN']['ORDER_ATTEMPTS'])
 ORDER_INTERVAL: float = float(config['MAIN']['ORDER_INTERVAL'])
+ADD_TO_CART: float = float(config['MAIN']['ADD_TO_CART'])
 
 HOURS: int = int(config['START_TIME']['HOURS'])
 MINUTES: int = int(config['START_TIME']['MINUTES'])

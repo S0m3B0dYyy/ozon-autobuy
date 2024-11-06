@@ -49,7 +49,7 @@ async def get(session, url, params=None, json_res=False):
                 if response.status == 200:
                     return last_response
         except (aiohttp.ClientError, json.JSONDecodeError):
-            pass
+            last_response = e
         if attempt < REQUEST_ATTEMPTS - 1:
             await asyncio.sleep(REQUEST_INTERVAL)
     logger.error(f'BAD REQUEST | {last_response_status} | {last_response}')
@@ -71,7 +71,7 @@ async def post(session, url, data={}, json_res=False):
                 if response.status == 200:
                     return last_response
         except Exception as e:
-            pass
+            last_response = e
         if attempt < REQUEST_ATTEMPTS - 1:
             await asyncio.sleep(REQUEST_INTERVAL)
     logger.error(f'BAD REQUEST | {last_response_status} | {last_response}')

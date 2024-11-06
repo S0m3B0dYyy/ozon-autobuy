@@ -1,0 +1,6 @@
+aiohttp~=3.10.5
+asyncio~=3.4.3
+uuid~=1.30
+DateTime~=5.4
+loguru~=0.7.2
+configparser~=6.0.0
